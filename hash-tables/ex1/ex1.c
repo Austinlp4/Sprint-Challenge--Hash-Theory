@@ -6,9 +6,33 @@
 Answer *get_indices_of_item_weights(int *weights, int length, int limit)
 {
   HashTable *ht = create_hash_table(16);
+  // Create our Answer struct to hold indices of matches
+  Answer *answer = malloc(sizeof(Answer));
 
-  // YOUR CODE HERE
+  // loop through the weights array
+  for(int i = 0; i < length; i++)
+  {
+    // check the ht to see if the match is present
+    int index_2 = hash_table_retrieve(ht, limit - weights[i]);
+    // if there is a match in our ht
+    if(index_2 != -1)
+    {
+      // set indexs to the current weight and our match in the ht
+      answer->index_1 = i;
+      answer->index_2 = index_2;
+      // return the answer struct
+      return answer;
+    }
+    // if no match found in the hash table then insert the weight into the ht
+    else
+    {
+      hash_table_insert(ht, weights[i], i);
+    }
+    
+  }
 
+  // Free up the memory
+  destroy_hash_table(ht);
   return NULL;
 }
 
